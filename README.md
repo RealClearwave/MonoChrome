@@ -32,8 +32,13 @@ ttyclear\Hello.log //您的人物
 
 Characters
        ├─gutc
+       
           ------Hello.log
+          
        ├─Polaris
+       
           ------Hello.log
+          
        └─ttyclear
+       
           ------Hello.log
