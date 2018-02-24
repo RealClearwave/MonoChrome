@@ -96,6 +96,11 @@ void dp(string s) {
 	int xal = 0;
 	for (int i=0; i<s.length(); i++) {
 		if (s[i] == '$') continue;
+		if (s[i] == '\\'){
+			i++;
+			cout<<s[i];
+			continue;
+		}
 		if (s[i] == '^'){
 			xal = i+1;
 			while (s[xal] != '^') xal++;
