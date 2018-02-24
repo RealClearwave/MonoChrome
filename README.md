@@ -1,4 +1,5 @@
 
+
 # Illegal
 The new console RPG game framework.
 
@@ -46,10 +47,16 @@ Characters
           ------Hello.log
 
 脚本编写如下：（以gutc\Hello.log举例）
+
 hello！#$
+
 %hello.exe%$
+
 Hi！#$
+
 Are you ok?#$
 
+
 其中，
+
 ‘#’表示换行，‘$’表示将话语权交给下一个角色,‘%’表示运行程序。
