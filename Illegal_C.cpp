@@ -44,26 +44,36 @@ void dp(string s) {
 	int xal = 0;
 	for (int i=0; i<s.length(); i++) {
 		if (s[i] == '$') continue;
-		if (s[i] == '*') {
+		if (s[i] == '~') {
+			xal = i+1;
+			while (s[xal] != '~') xal++;
+			//cout<<"***"<<xal<<"***"<<endl;
+			string ss = s.substr(i+1,xal-i-1);
+			//cout<<ss<<endl;
+			cout<<lg[find_val(ss)];
+			i = xal;
+		} else if (s[i] == '*') {
 			xal = i+1;
 			while (s[xal] != '#') xal++;
 			string ss = s.substr(i+1,xal-i-1);
 			xal = 0;
-			while (xal < ss.length()){
+			while (xal < ss.length()) {
 				xal ++;
-				if (ss[xal] == '+' || ss[xal] == '=' || ss[xal] == '-'){
-					string p;int q;
+				if (ss[xal] == '+' || ss[xal] == '=' || ss[xal] == '-') {
+					string p;
+					int q;
 					p = ss.substr(0,xal);
 					q = stoi(ss.substr(xal+1));
-					if (ss[xal] == '+'){
+					if (ss[xal] == '+') {
 						add_val(p,q);
-					}else if (ss[xal] == '-'){
+					} else if (ss[xal] == '-') {
 						add_val(p,-q);
-					}else if (ss[xal] == '='){
+					} else if (ss[xal] == '=') {
 						set_val(p,q);
 					}
 				}
 			}
+			i = xal+2;
 		} else if (s[i] == '%' ) {
 			xal = i+1;
 			while (s[xal] != '#')
@@ -103,17 +113,17 @@ void Login() {
 			vg[vn] = s.substr(0,p);
 			lg[vn] = stoi(s.substr(p+1));
 		}
-		
+
 		fdtkt("Save.cfg");
 		fin<<"admin"<<endl<<"alpine"<<endl<<1<<endl;
-		for (int i=1;i<=vn;i++){
+		for (int i=1; i<=vn; i++) {
 			fin<<vg[i]<<'='<<lg[i]<<endl;
 		}
 		cacc.name = "admin";
 		cacc.pswd = "alpine";
 		cacc.stat = 1;
 		st = cacc.stat;
-	}else{
+	} else {
 		fdtkt("Save.cfg");
 		fin>>cacc.name>>cacc.pswd>>cacc.stat;
 		st = cacc.stat;
@@ -124,7 +134,7 @@ void Login() {
 			lg[vn] = stoi(s.substr(p+1));
 		}
 	}
-	
+
 	return;
 }
 
@@ -147,18 +157,30 @@ bool PlayScript(int st) {
 		fin>>s;
 		tc++;
 		ch[tc] = s;
-		//nm[tc] =nnm;
 	}
 	tc--;
+
+	while(fin>>s) {
+		int p = 1,q;
+		while (s[p] != '+' && s[p] != '-' && s[p] != '=') p++;
+		string r;
+		r = s.substr(0,p);
+		q = stoi(s.substr(p+1));
+		if (s[p] == '+') {
+			add_val(r,q);
+		} else if (s[p] == '-') {
+			add_val(r,-q);
+		} else if (s[p] == '=') {
+			set_val(r,q);
+		}
+	}
 	for (int i=1; i<=tc; i++) {
 		fdtkt("Characters\\" + ch[i]);
 		while (getline(fin,s)) {
 			txt[i] += s;
 		}
-		//cout<<"Characters\\" + ch[i]<<endl;
 	}
 
-	//cout<<tc<<endl;
 	int exit = 0;
 	int i = 0,tff;
 	bool prt;
@@ -195,14 +217,14 @@ bool PlayScript(int st) {
 int main() {
 	Login();
 	while (PlayScript(st)) st++;
-	
-	system("del Save.cfg>nul");
+
+	system("del Save.cfg>nul"); // linux users replace this to 'rm Save.cfg'
 	system("copy Save.bak Save.cfg>nul");
 	fdtkt("Save.cfg");
 	fin<<cacc.name<<endl<<cacc.pswd<<endl;
 	fin<<st+1<<endl;
-	
-	for (int i=1;i<=vn;i++){
+
+	for (int i=1; i<=vn; i++) {
 		fin<<vg[i]<<'='<<lg[i]<<endl;
 	}
 
