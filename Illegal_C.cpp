@@ -39,12 +39,70 @@ void add_val(string s,int x) {
 	lg[p] += x;
 }
 
+int cmp_val(string s,int x){
+	int p = find_val(s);
+	if (lg[p] < x) return 0;
+	if (lg[p] == x) return 1;
+	if (lg[p] > x) return 2;
+}
+
+
+void calc(string p,char x,int q){
+	if (x == '+') {
+		add_val(p,q);
+	} else if (x == '-') {
+		add_val(p,-q);
+	} else if (x == '=') {
+		set_val(p,q);
+	}
+}
+
+void calc0(string s){
+	string a;char x;int b;int p=0;
+	while (!(s[p] == '+' || s[p] == '=' || s[p] == '-')) p++;
+	a = s.substr(0,p);x = s[p];b = stoi(s.substr(p+1));
+	calc(a,x,b);
+}
+bool dec_cmp(string s){
+	string a;char x;int b;int p = 0;
+	while (!(s[p] == '<' || s[p] == '=' || s[p] == '>')) p++;
+	a = s.substr(0,p);x = s[p];b = stoi(s.substr(p+1));
+	//cout<<a<<' '<<x<<' '<<b<<endl;
+	int r = cmp_val(a,b);
+	if (x == '<' && r == 0) return true;
+	if (x == '=' && r == 1) return true;
+	if (x == '>' && r == 2) return true;
+	return false;
+}
+void decode_if(string s){
+	//Like A=B?1=2:3=4
+	int pe = s.find('?');
+	int ps = s.find(':');
+	
+	//cout<<pe<<' '<<ps<<endl;
+	string sg1 = s.substr(0,pe);
+	string sg2 = s.substr(pe+1,ps-pe-1);
+	string sg3 = s.substr(ps+1);
+	//cout<<sg1<<' '<<sg2<<' '<<sg3<<endl;
+	
+	bool bol = dec_cmp(sg1);
+	if (bol)
+		calc0(sg2);
+	else
+		calc0(sg3);
+}
 void dp(string s) {
 	CL_GREEN;
 	int xal = 0;
 	for (int i=0; i<s.length(); i++) {
 		if (s[i] == '$') continue;
-		if (s[i] == '~') {
+		if (s[i] == '^'){
+			xal = i+1;
+			while (s[xal] != '^') xal++;
+			string ss = s.substr(i+1,xal-i-1);
+			decode_if(ss);
+			i = xal;
+		}else if (s[i] == '~') {
 			xal = i+1;
 			while (s[xal] != '~') xal++;
 			//cout<<"***"<<xal<<"***"<<endl;
@@ -64,13 +122,7 @@ void dp(string s) {
 					int q;
 					p = ss.substr(0,xal);
 					q = stoi(ss.substr(xal+1));
-					if (ss[xal] == '+') {
-						add_val(p,q);
-					} else if (ss[xal] == '-') {
-						add_val(p,-q);
-					} else if (ss[xal] == '=') {
-						set_val(p,q);
-					}
+					calc(p,ss[xal],q);
 				}
 			}
 			i = xal+2;
@@ -166,13 +218,7 @@ bool PlayScript(int st) {
 		string r;
 		r = s.substr(0,p);
 		q = stoi(s.substr(p+1));
-		if (s[p] == '+') {
-			add_val(r,q);
-		} else if (s[p] == '-') {
-			add_val(r,-q);
-		} else if (s[p] == '=') {
-			set_val(r,q);
-		}
+		calc(r,s[p],q);
 	}
 	for (int i=1; i<=tc; i++) {
 		fdtkt("Characters\\" + ch[i]);
