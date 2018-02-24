@@ -59,8 +59,9 @@ void calc(string p,char x,int q){
 
 void calc0(string s){
 	string a;char x;int b;int p=0;
-	while (!(s[p] == '+' || s[p] == '=' || s[p] == '-')) p++;
+	while (!(s[p] == '+' || s[p] == '=' || s[p] == '-')) p++;//cout<<p<<endl;
 	a = s.substr(0,p);x = s[p];b = stoi(s.substr(p+1));
+	//cout<<a<<' '<<x<<' '<<b<<endl;
 	calc(a,x,b);
 }
 bool dec_cmp(string s){
@@ -68,7 +69,7 @@ bool dec_cmp(string s){
 	while (!(s[p] == '<' || s[p] == '=' || s[p] == '>')) p++;
 	a = s.substr(0,p);x = s[p];b = stoi(s.substr(p+1));
 	//cout<<a<<' '<<x<<' '<<b<<endl;
-	int r = cmp_val(a,b);
+	int r = cmp_val(a,b);//cout<<r<<endl;
 	if (x == '<' && r == 0) return true;
 	if (x == '=' && r == 1) return true;
 	if (x == '>' && r == 2) return true;
@@ -101,18 +102,35 @@ void dp(string s) {
 			cout<<s[i];
 			continue;
 		}
-		if (s[i] == '^'){
+		if (s[i] == '\''){
+			xal = i+1;
+			while (s[xal] != '\'') xal++;
+			int fp = xal+1;
+			while (s[fp] != ';') fp++;
+			string ss = s.substr(i+1,xal-i-1);
+			//cout<<"***"<<ss<<"***"<<endl;
+			string se = s.substr(xal+1,fp-xal-1);
+			//cout<<ss<<' '<<se<<endl;
+			while(dec_cmp(ss)){
+				//cout<<1<<endl;
+				calc0(se);
+			}
+			i = fp;
+			//cout<<lg[find_val("IQ")]<<endl;
+		}else if (s[i] == '^'){
 			xal = i+1;
 			while (s[xal] != '^') xal++;
 			string ss = s.substr(i+1,xal-i-1);
 			decode_if(ss);
 			i = xal;
 		}else if (s[i] == '~') {
+			//cout<<i<<endl;
 			xal = i+1;
 			while (s[xal] != '~') xal++;
 			//cout<<"***"<<xal<<"***"<<endl;
 			string ss = s.substr(i+1,xal-i-1);
 			//cout<<ss<<endl;
+			//cout<<ss<<' '<<find_val(ss)<<endl; 
 			cout<<lg[find_val(ss)];
 			i = xal;
 		} else if (s[i] == '*') {
