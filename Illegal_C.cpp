@@ -92,6 +92,37 @@ void decode_if(string s){
 	else
 		calc0(sg3);
 }
+
+string ag_e[501],ats;
+void agent(string s){
+	int lp = s.find('[');
+	int rp = s.find(']');
+	int p1 = s.find(',');
+	int p2 = s.find(',',p1+1);
+	string ask = s.substr(lp+1,rp-1);
+	int np = rp+1,tp;
+	cout<<"Q:"<<ask<<endl;
+	int comp = 0;
+	while (np != -1){
+		tp = np;while (s[tp] == ';') tp ++;
+		np = s.find(';',np+1);
+		ats = s.substr(tp,np-1-tp);
+		if (ats[0] == '#') break;
+		//cout<<ts<<endl;
+		int fp = ats.find(',');
+		string k,l;
+		k = ats.substr(0,fp);
+		l = ats.substr(fp+1);
+		//cout<<k<<' '<<l;
+		comp++;
+		cout<<k<<"....."<<comp<<endl;
+		ag_e[comp] = l;
+	}
+	int sel;
+	cout<<"Your Choise:";
+	cin>>sel;
+	calc0(ag_e[sel]);
+}
 void dp(string s) {
 	CL_GREEN;
 	int xal = 0;
@@ -102,7 +133,14 @@ void dp(string s) {
 			cout<<s[i];
 			continue;
 		}
-		if (s[i] == '\''){
+		
+		if (s[i] == '['){
+			xal = i+1;
+			while (s[xal] != '#') xal++;
+			string ss = s.substr(i+1,xal-i-1);
+			agent(s);
+			i = xal;
+		}else if (s[i] == '\''){
 			xal = i+1;
 			while (s[xal] != '\'') xal++;
 			int fp = xal+1;
