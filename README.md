@@ -26,6 +26,10 @@ ttyclear\Hello.log //您的人物
 
 @Characters_End //结束符
 
+Power=180 //定义变量
+IQ=7 //定义变量
+Like=10 //定义变量
+
 并保存为 ‘scr + 回合（第几回合，无前导零） + .log’
 
 人物脚本配合回合脚本存放。
@@ -60,3 +64,16 @@ Are you ok?#$
 其中，
 
 ‘#’表示换行，‘$’表示将话语权交给下一个角色,‘%’表示运行程序。
+*IQ-5# ----> IQ -= 5;
+*IQ+5# ----> IQ += 5;
+*IQ=5# ----> IQ = 5;
+~IQ~ ----> 输出'IQ'
+^A>(=,<)B:(Expr1):(Expr2)^ ----> if (A>(=,<)B) (Expr1); else (Expr2);
+'(Expr1)'Expr2; ----> while(Expr1) Expr2;
+选择:
+[Text1]
+Text2,Expr1;
+Text3,Expr2;
+...  ,...  ;
+Textn,Exprn;
+#
