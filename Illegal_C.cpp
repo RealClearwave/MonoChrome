@@ -39,7 +39,7 @@ void add_val(string s,int x) {
 	lg[p] += x;
 }
 
-int cmp_val(string s,int x){
+int cmp_val(string s,int x) {
 	int p = find_val(s);
 	if (lg[p] < x) return 0;
 	if (lg[p] == x) return 1;
@@ -47,7 +47,7 @@ int cmp_val(string s,int x){
 }
 
 
-void calc(string p,char x,int q){
+void calc(string p,char x,int q) {
 	if (x == '+') {
 		add_val(p,q);
 	} else if (x == '-') {
@@ -57,17 +57,27 @@ void calc(string p,char x,int q){
 	}
 }
 
-void calc0(string s){
-	string a;char x;int b;int p=0;
+void calc0(string s) {
+	string a;
+	char x;
+	int b;
+	int p=0;
 	while (!(s[p] == '+' || s[p] == '=' || s[p] == '-')) p++;//cout<<p<<endl;
-	a = s.substr(0,p);x = s[p];b = stoi(s.substr(p+1));
+	a = s.substr(0,p);
+	x = s[p];
+	b = stoi(s.substr(p+1));
 	//cout<<a<<' '<<x<<' '<<b<<endl;
 	calc(a,x,b);
 }
-bool dec_cmp(string s){
-	string a;char x;int b;int p = 0;
+bool dec_cmp(string s) {
+	string a;
+	char x;
+	int b;
+	int p = 0;
 	while (!(s[p] == '<' || s[p] == '=' || s[p] == '>')) p++;
-	a = s.substr(0,p);x = s[p];b = stoi(s.substr(p+1));
+	a = s.substr(0,p);
+	x = s[p];
+	b = stoi(s.substr(p+1));
 	//cout<<a<<' '<<x<<' '<<b<<endl;
 	int r = cmp_val(a,b);//cout<<r<<endl;
 	if (x == '<' && r == 0) return true;
@@ -75,17 +85,17 @@ bool dec_cmp(string s){
 	if (x == '>' && r == 2) return true;
 	return false;
 }
-void decode_if(string s){
+void decode_if(string s) {
 	//Like A=B?1=2:3=4
 	int pe = s.find('?');
 	int ps = s.find(':');
-	
+
 	//cout<<pe<<' '<<ps<<endl;
 	string sg1 = s.substr(0,pe);
 	string sg2 = s.substr(pe+1,ps-pe-1);
 	string sg3 = s.substr(ps+1);
 	//cout<<sg1<<' '<<sg2<<' '<<sg3<<endl;
-	
+
 	bool bol = dec_cmp(sg1);
 	if (bol)
 		calc0(sg2);
@@ -94,7 +104,7 @@ void decode_if(string s){
 }
 
 string ag_e[501],ats;
-void agent(string s){
+void agent(string s) {
 	int lp = s.find('[');
 	int rp = s.find(']');
 	int p1 = s.find(',');
@@ -103,8 +113,9 @@ void agent(string s){
 	int np = rp+1,tp;
 	cout<<"Q:"<<ask<<endl;
 	int comp = 0;
-	while (np != -1){
-		tp = np;while (s[tp] == ';') tp ++;
+	while (np != -1) {
+		tp = np;
+		while (s[tp] == ';') tp ++;
 		np = s.find(';',np+1);
 		ats = s.substr(tp,np-1-tp);
 		if (ats[0] == '#') break;
@@ -118,9 +129,12 @@ void agent(string s){
 		cout<<k<<"....."<<comp<<endl;
 		ag_e[comp] = l;
 	}
-	int sel;
-	cout<<"Your Choise:";
-	cin>>sel;
+	int sel = 2147483;
+	
+	while(sel > comp){
+		cout<<"Your Choise:";
+		cin>>sel;
+	}
 	calc0(ag_e[sel]);
 }
 void dp(string s) {
@@ -128,19 +142,19 @@ void dp(string s) {
 	int xal = 0;
 	for (int i=0; i<s.length(); i++) {
 		if (s[i] == '$') continue;
-		if (s[i] == '\\'){
+		if (s[i] == '\\') {
 			i++;
 			cout<<s[i];
 			continue;
 		}
-		
-		if (s[i] == '['){
+
+		if (s[i] == '[') {
 			xal = i+1;
 			while (s[xal] != '#') xal++;
 			string ss = s.substr(i+1,xal-i-1);
 			agent(s);
 			i = xal;
-		}else if (s[i] == '\''){
+		} else if (s[i] == '\'') {
 			xal = i+1;
 			while (s[xal] != '\'') xal++;
 			int fp = xal+1;
@@ -149,26 +163,26 @@ void dp(string s) {
 			//cout<<"***"<<ss<<"***"<<endl;
 			string se = s.substr(xal+1,fp-xal-1);
 			//cout<<ss<<' '<<se<<endl;
-			while(dec_cmp(ss)){
+			while(dec_cmp(ss)) {
 				//cout<<1<<endl;
 				calc0(se);
 			}
 			i = fp;
 			//cout<<lg[find_val("IQ")]<<endl;
-		}else if (s[i] == '^'){
+		} else if (s[i] == '^') {
 			xal = i+1;
 			while (s[xal] != '^') xal++;
 			string ss = s.substr(i+1,xal-i-1);
 			decode_if(ss);
 			i = xal;
-		}else if (s[i] == '~') {
+		} else if (s[i] == '~') {
 			//cout<<i<<endl;
 			xal = i+1;
 			while (s[xal] != '~') xal++;
 			//cout<<"***"<<xal<<"***"<<endl;
 			string ss = s.substr(i+1,xal-i-1);
 			//cout<<ss<<endl;
-			//cout<<ss<<' '<<find_val(ss)<<endl; 
+			//cout<<ss<<' '<<find_val(ss)<<endl;
 			cout<<lg[find_val(ss)];
 			i = xal;
 		} else if (s[i] == '*') {
