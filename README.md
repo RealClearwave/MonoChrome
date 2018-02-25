@@ -64,16 +64,29 @@ Are you ok?#$
 其中，
 
 ‘#’表示换行，‘$’表示将话语权交给下一个角色,‘%’表示运行程序。
+
 *IQ-5# ----> IQ -= 5;
+
 *IQ+5# ----> IQ += 5;
+
 *IQ=5# ----> IQ = 5;
+
 ~IQ~ ----> 输出'IQ'
+
 ^A>(=,<)B:(Expr1):(Expr2)^ ----> if (A>(=,<)B) (Expr1); else (Expr2);
+
 '(Expr1)'Expr2; ----> while(Expr1) Expr2;
+
 选择:
+
 [Text1]
+
 Text2,Expr1;
+
 Text3,Expr2;
+
 ...  ,...  ;
+
 Textn,Exprn;
+
 #
