@@ -57,17 +57,24 @@ void calc(string p,char x,int q) {
 	}
 }
 
+void dp(string s);
 void calc0(string s) {
 	string a;
 	char x;
 	int b;
 	int p=0;
-	while (!(s[p] == '+' || s[p] == '=' || s[p] == '-')) p++;//cout<<p<<endl;
+	while (!(s[p] == '+' || s[p] == '=' || s[p] == '-') && p < s.length()) p++;//cout<<p<<endl;
+	//cout<<s<<' '<<p<<endl;
+	if (p < s.length()){
 	a = s.substr(0,p);
 	x = s[p];
 	b = stoi(s.substr(p+1));
 	//cout<<a<<' '<<x<<' '<<b<<endl;
 	calc(a,x,b);
+	}else{
+		//cout<<p<<endl;
+		dp(s);
+	}
 }
 bool dec_cmp(string s) {
 	string a;
@@ -118,7 +125,7 @@ void agent(string s) {
 		while (s[tp] == ';') tp ++;
 		np = s.find(';',np+1);
 		ats = s.substr(tp,np-1-tp);
-		if (ats[0] == '#') break;
+		if (ats[0] == '@') break;
 		//cout<<ts<<endl;
 		int fp = ats.find(',');
 		string k,l;
@@ -139,6 +146,7 @@ void agent(string s) {
 }
 
 int g_i;
+bool PlayScript(int st);
 bool exe(string s,int i){
 	string v;
 	int p = s.find(' ');
@@ -152,9 +160,17 @@ bool exe(string s,int i){
 		while (getline(fin,ss)) {
 			txt[g_i] += ss;
 		}
-		
+		cout<<"..."<<endl;
+		return true;
 		//cout<<g_i<<' '<<txt[g_i];
+	}else if (v == "jmpscr"){
+		PlayScript(stoi(s.substr(p+1)));
+		cout<<"..."<<endl;
+		return true;
+	}else if (v == "echo"){
+		cout<<endl<<s.substr(p+1)<<endl;
 	}
+	return false;
 }
 void dp(string s) {
 	CL_GREEN;
@@ -170,12 +186,13 @@ void dp(string s) {
 			xal = i+1;
 			while (s[xal] != '}') xal++;
 			string ss = s.substr(i+1,xal-i-1);
+			
 			if (exe(ss,i)) //Running Jump;
 				return;
 			i = xal;
 		}else if (s[i] == '[') {
 			xal = i+1;
-			while (s[xal] != '#') xal++;
+			while (s[xal] != '@') xal++;
 			string ss = s.substr(i+1,xal-i-1);
 			agent(s);
 			i = xal;
