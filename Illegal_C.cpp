@@ -137,6 +137,25 @@ void agent(string s) {
 	}
 	calc0(ag_e[sel]);
 }
+
+int g_i;
+bool exe(string s,int i){
+	string v;
+	int p = s.find(' ');
+	v = s.substr(0,p);
+	//cout<<s.substr(p+1)<<endl;
+	//cout<<v<<endl;
+	if (v == "jump"){
+		fdtkt("Characters\\"+s.substr(p+1));
+		string ss;
+		txt[g_i] = "";ff[i] = 0;
+		while (getline(fin,ss)) {
+			txt[g_i] += ss;
+		}
+		
+		//cout<<g_i<<' '<<txt[g_i];
+	}
+}
 void dp(string s) {
 	CL_GREEN;
 	int xal = 0;
@@ -147,8 +166,14 @@ void dp(string s) {
 			cout<<s[i];
 			continue;
 		}
-
-		if (s[i] == '[') {
+		if (s[i] == '{'){
+			xal = i+1;
+			while (s[xal] != '}') xal++;
+			string ss = s.substr(i+1,xal-i-1);
+			if (exe(ss,i)) //Running Jump;
+				return;
+			i = xal;
+		}else if (s[i] == '[') {
 			xal = i+1;
 			while (s[xal] != '#') xal++;
 			string ss = s.substr(i+1,xal-i-1);
@@ -313,7 +338,7 @@ bool PlayScript(int st) {
 			if (i > tc) i = 1;
 		}
 
-
+		g_i = i; //Global I;
 		tff = ff[i];
 		ff[i] = txt[i].find('$',ff[i]+1);
 
