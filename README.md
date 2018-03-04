@@ -90,3 +90,7 @@ Text3,Expr2;
 Textn,Exprn;
 
 #
+
+内建函数：格式：{表达式}
+{jump <Location>} ：将该人物脚本替换为 <Location>
+       
