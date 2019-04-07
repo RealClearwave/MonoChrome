@@ -1,6 +1,6 @@
 
 
-# Illegal
+# MonoChrome
 The new console RPG game framework.
 
 **怎么使用该框架**
