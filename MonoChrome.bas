@@ -1,5 +1,3 @@
-'Produced By Fedoraer using FreeBASIC
-'Using GPL V2.0
 public dim shared as integer i,dpsec = 30,Ofile = 0
 
 function fdd(byval s as string) as integer
@@ -100,13 +98,10 @@ sub PlayScript(byval dc as integer)
     loop
     
     color 12
-    print "Connection Established::"
+    print "[Done.]"
     color 10
     close
 end sub
-
-'shell("LocalDrive\System\hello.bat")
-'dp("%LocalDrive\System\hello.bat#")
 
 init
 'Main
